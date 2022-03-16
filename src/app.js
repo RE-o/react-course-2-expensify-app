@@ -13,36 +13,6 @@ import moment from 'moment';
 
 const store = configureStore();
 
-store.dispatch(addExpense({
-  description: 'Water bill',
-  amount: 4000,
-  createdAt: moment().subtract(3, 'days').valueOf()
-}));
-
-store.dispatch(addExpense({
-  description: 'Gas bill',
-  amount: 5000,
-  createdAt: moment().subtract(1, 'days').valueOf()
-}));
-
-store.dispatch(addExpense({
-  description: 'Refrigerator',
-  amount: 10000,
-  createdAt: moment().valueOf()
-}));
-
-// store.dispatch(setTextFilter('bill'));
-// store.dispatch(setTextFilter('water'));
-
-// setTimeout(() => {
-//   console.log('set filter');
-//   store.dispatch(setTextFilter('bill'));
-// }, 2000);
-
-// const state = store.getState();
-// const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
-// console.log(store.getState());
-
 const jsx = (
   <Provider store={store}>
     <AppRouter />
