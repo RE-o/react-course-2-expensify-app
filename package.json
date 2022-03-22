@@ -1,6 +1,9 @@
 {
   "name": "expensify",
   "version": "1.0.0",
+  "engine": {
+    "node": "16.x"
+  },
   "main": "app.js",
   "author": "at3o",
   "license": "MIT",
