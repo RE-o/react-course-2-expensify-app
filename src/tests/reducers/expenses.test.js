@@ -71,4 +71,14 @@ test('should not edit expense if expense not found', () => {
   expect(state).toEqual(expenses);
 });
 
+test('should set expenses', () => {
+  // we get one expense from fixture.
+  const action = {
+    type: 'SET_EXPENSES',
+    expenses: [expenses[1]]
+  };
 
+  // we start reducer state with all the expenses and we expect only one as result of the action
+  const state = expensesReducer(expenses, action);
+  expect(state).toEqual([expenses[1]]);
+});

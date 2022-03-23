@@ -43,3 +43,27 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+// SET_EXPENSES
+export const setExpenses = (expenses) => ({
+  type: 'SET_EXPENSES',
+  expenses
+});
+
+// we need async action to fetch data
+export const startSetExpenses = () => {
+  return (dispatch) => {
+    // get data and then parse it into an array
+    return get(ref(db, 'expenses')).then((snapshot) => {
+      const expenses = [];
+      snapshot.forEach((childSnapshot) => {
+        expenses.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+
+      dispatch(setExpenses(expenses));
+    });
+  };
+};
