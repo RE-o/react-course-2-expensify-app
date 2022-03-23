@@ -1,4 +1,4 @@
-import {getDatabase, off, ref, set, get, onValue, onChildRemoved, onChildChanged, onChildAdded, update, remove, push} from 'firebase/database';
+import { getDatabase, off, ref, set, get, onValue, onChildRemoved, onChildChanged, onChildAdded, update, remove, push } from 'firebase/database';
 import { app } from '../firebase/firebase';
 
 const db = getDatabase(app);
@@ -22,7 +22,8 @@ export const startAddExpense = (expenseData = {}) => {
     const expense = { description, note, amount, createdAt };
 
     // here we need to return push... in order to use promise chaining (cfr. tests in actions/expenses)
-    return push(ref(db, 'expenses'), expense).then((ref) => {
+    return push(ref(db, 'expenses'), expense).then((ref) => { // you need this return in order to do something after startAddExpense has completed
+
       dispatch(addExpense({
         id: ref.key,
         ...expense
@@ -39,7 +40,8 @@ export const removeExpense = ({id} = {}) => ({
 
 export const startRemoveExpense = ({id} = {}) => {
   return (dispatch) => {
-    return remove(ref(db, `expenses/${id}`)).then(() => {
+    return remove(ref(db, `expenses/${id}`)).then(() => { // you need this return in order to do something after startRemoveExpense has completed
+
       dispatch(removeExpense({id}));
     });
   };
@@ -51,6 +53,14 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+export const startEditExpense = (id, updates) => {
+  return (dispatch) => {
+    return update(ref(db, `expenses/${id}`), updates).then(() => { // you need this return in order to do something after startEditExpense has completed
+      dispatch(editExpense(id, updates))
+    });
+  };
+};
 
 // SET_EXPENSES
 export const setExpenses = (expenses) => ({
