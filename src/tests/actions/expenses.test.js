@@ -1,4 +1,12 @@
-import { startAddExpense, startSetExpenses, addExpense, editExpense, removeExpense, setExpenses } from '../../actions/expenses';
+import {
+  startAddExpense,
+  startRemoveExpense,
+  startSetExpenses,
+  addExpense,
+  editExpense,
+  removeExpense,
+  setExpenses
+} from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -27,6 +35,25 @@ test('should setup remove expense action object', () => {
   });
 });
 
+test('should remove expenses from firebase', (done) => {
+  const store = createMockStore({});
+  const id = expenses[0].id;
+
+  store.dispatch(startRemoveExpense({ id })).then(() => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: 'REMOVE_EXPENSE',
+      id
+    });
+
+    // verify expense with id: id is not there anymore. We return the promise in order to chain and avoid too much nesting
+    return get(ref(db, `expenses/${id}`));
+  }).then((snapshot) => {
+    expect(snapshot.val()).toBeFalsy();
+    done();
+  });
+});
+
 test('should setup edit expense action object', () => {
   const action = editExpense('123abc', { note: 'New note value'});
   expect(action).toEqual({
@@ -46,7 +73,7 @@ test('should setup add expense action object', () => {
 });
 
 // it is async test
-test('should add expense to database and store', (done) => {
+test('should add expense to database firebase and store', (done) => {
   const store = createMockStore({});
 
   const expenseData = {
@@ -124,3 +151,4 @@ test('should fetch the expenses from firebase', (done) => {
     done();
   });
 });
+
