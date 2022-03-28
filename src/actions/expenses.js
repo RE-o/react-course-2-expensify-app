@@ -11,7 +11,8 @@ export const addExpense = (expense) => ({
 });
 
 export const startAddExpense = (expenseData = {}) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const {
       description = '',
       note = '',
@@ -22,7 +23,7 @@ export const startAddExpense = (expenseData = {}) => {
     const expense = { description, note, amount, createdAt };
 
     // here we need to return push... in order to use promise chaining (cfr. tests in actions/expenses)
-    return push(ref(db, 'expenses'), expense).then((ref) => { // you need this return in order to do something after startAddExpense has completed
+    return push(ref(db, `users/${uid}/expenses`), expense).then((ref) => { // you need this return in order to do something after startAddExpense has completed
 
       dispatch(addExpense({
         id: ref.key,
@@ -39,9 +40,10 @@ export const removeExpense = ({id} = {}) => ({
 });
 
 export const startRemoveExpense = ({id} = {}) => {
-  return (dispatch) => {
-    return remove(ref(db, `expenses/${id}`)).then(() => { // you need this return in order to do something after startRemoveExpense has completed
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
 
+    return remove(ref(db, `/users/${uid}/expenses/${id}`)).then(() => { // you need this return in order to do something after startRemoveExpense has completed
       dispatch(removeExpense({id}));
     });
   };
@@ -55,8 +57,10 @@ export const editExpense = (id, updates) => ({
 });
 
 export const startEditExpense = (id, updates) => {
-  return (dispatch) => {
-    return update(ref(db, `expenses/${id}`), updates).then(() => { // you need this return in order to do something after startEditExpense has completed
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+
+    return update(ref(db, `/users/${uid}/expenses/${id}`), updates).then(() => { // you need this return in order to do something after startEditExpense has completed
       dispatch(editExpense(id, updates))
     });
   };
@@ -70,9 +74,10 @@ export const setExpenses = (expenses) => ({
 
 // we need async action to fetch data
 export const startSetExpenses = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     // get data and then parse it into an array
-    return get(ref(db, 'expenses')).then((snapshot) => {
+    return get(ref(db, `users/${uid}/expenses`)).then((snapshot) => {
       const expenses = [];
       snapshot.forEach((childSnapshot) => {
         expenses.push({
