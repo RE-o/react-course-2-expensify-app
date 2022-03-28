@@ -44,6 +44,7 @@ auth.onAuthStateChanged((user) => {
     store.dispatch(startSetExpenses()).then(() => {
       renderApp();
       // If we are on the login page, redirect to the dashboard
+      // TODO: tmp in order to get the login page even if we are loggedin . We need to fix this at router level
       if (history.location.pathname === '/') {
         history.push('/dashboard');
       }
