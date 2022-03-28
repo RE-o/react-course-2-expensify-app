@@ -1,4 +1,5 @@
 import {initializeApp} from 'firebase/app';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import {getDatabase, off, ref, set, get, onValue, onChildRemoved, onChildChanged, onChildAdded, update, remove, push} from 'firebase/database';
 import moment from 'moment';
 
@@ -14,7 +15,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export { app };
+const auth = getAuth();
+const googleAuthProvider = new GoogleAuthProvider();
+
+export { auth, googleAuthProvider, signInWithPopup, signOut };
+
+// Initialize Firebase Authentication and get a reference to the service
 
 // const db = getDatabase(app);
 
