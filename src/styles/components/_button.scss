@@ -1,0 +1,19 @@
+.button {
+  color: white;
+  background: $blue;
+  border: none;
+  display: inline-block; // to style also simple Links as buttons. By default links are displayed inline whence no margin and padding 
+  font-size: $font-size-large;
+  font-weight: 300;
+  line-height: 1; // the button text is on 1 line
+  padding: $s-size;
+  text-decoration: none;
+}
+
+.button--link {
+  background: none;
+}
+
+.button--secondary {
+  background: #888;
+}

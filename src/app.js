@@ -10,6 +10,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import './styles/styles.scss';
 import moment from 'moment';
 import { auth } from './firebase/firebase';
+import LoadingPage  from './components/LoadingPage';
 
 // testing playground load
 // import './playground/promises';
@@ -31,7 +32,7 @@ const renderApp = () => {
   hasRendered = true;
 };
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById('app'));
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 // We would like to redirect user base on our logic. But we are not inside a router component.
 // In order to use history API we install history npm pkg and add manually to
